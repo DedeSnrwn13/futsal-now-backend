@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('grounds', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('owner_id');
             $table->string('name');
             $table->text('description');
             $table->double('rental_price')->comment('per hour');

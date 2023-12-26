@@ -10,6 +10,7 @@ class Ground extends Model
     use HasFactory;
 
     protected $fillable = [
+        'owner_id',
         'name',
         'description',
         'rental_price',
@@ -28,5 +29,10 @@ class Ground extends Model
     public function groundReviews()
     {
         return $this->hasMany(GroundReview::class);
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id', 'id');
     }
 }
