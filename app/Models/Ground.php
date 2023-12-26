@@ -10,14 +10,12 @@ class Ground extends Model
     use HasFactory;
 
     protected $fillable = [
-        'owner_id',
+        'sport_arena_id',
         'name',
         'description',
         'rental_price',
         'capacity',
         'is_available',
-        'open_time',
-        'close_time',
         'image'
     ];
 
@@ -31,8 +29,8 @@ class Ground extends Model
         return $this->hasMany(GroundReview::class);
     }
 
-    public function owner()
+    public function sportArena()
     {
-        return $this->belongsTo(User::class, 'owner_id', 'id');
+        return $this->belongsTo(SportArena::class);
     }
 }

@@ -11,15 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('grounds', function (Blueprint $table) {
+        Schema::create('sport_arenas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sport_arena_id');
+            $table->foreignId('user_id');
             $table->string('name');
             $table->text('description');
-            $table->double('rental_price')->comment('per hour');
-            $table->integer('capacity');
-            $table->boolean('is_available')->default(true);
-            $table->string('image');
+            $table->string('city');
+            $table->string('district');
+            $table->string('email')->unique()->nullable();
+            $table->string('wa_number');
+            $table->dateTime('open_time');
+            $table->datetime('close_time');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('grounds');
+        Schema::dropIfExists('sport_arenas');
     }
 };

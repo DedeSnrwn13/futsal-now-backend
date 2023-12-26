@@ -66,8 +66,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(GroundReview::class);
     }
 
-    public function grounds()
+    public function sportArenas()
     {
-        return $this->hasMany(User::class, 'owner_id', 'id');
+        return $this->hasMany(SportArena::class);
     }
 }
