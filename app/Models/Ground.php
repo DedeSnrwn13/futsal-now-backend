@@ -19,6 +19,10 @@ class Ground extends Model
         'image'
     ];
 
+    protected $casts = [
+        'image' => 'array'
+    ];
+
     public function bookings()
     {
         return $this->hasMany(Booking::class);

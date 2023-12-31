@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SportArenaResource\Pages;
 use App\Filament\Resources\SportArenaResource\RelationManagers;
+use App\Filament\Resources\SportArenaResource\RelationManagers\GroundsRelationManager;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SportArenaResource extends Resource
@@ -71,7 +72,7 @@ class SportArenaResource extends Resource
                         ->email(),
                     TextInput::make('wa_number')
                         ->placeholder('eg: 628xxxxxxx')
-                        ->numeric()
+                        ->tel()
                         ->required(),
                     TimePicker::make('open_time')
                         ->required(),
@@ -156,7 +157,7 @@ class SportArenaResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            GroundsRelationManager::class,
         ];
     }
 

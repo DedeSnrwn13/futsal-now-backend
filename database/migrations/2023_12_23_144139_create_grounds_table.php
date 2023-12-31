@@ -19,7 +19,7 @@ return new class extends Migration
             $table->double('rental_price')->comment('per hour');
             $table->integer('capacity');
             $table->boolean('is_available')->default(true);
-            $table->string('image');
+            $table->json('image');
             $table->timestamps();
         });
     }
