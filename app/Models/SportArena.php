@@ -19,7 +19,9 @@ class SportArena extends Model
         'address',
         'wa_number',
         'open_time',
-        'close_time'
+        'close_time',
+        'logo',
+        'map_link'
     ];
 
     public function user()

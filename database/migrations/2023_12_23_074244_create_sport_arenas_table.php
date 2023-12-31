@@ -20,8 +20,10 @@ return new class extends Migration
             $table->string('district');
             $table->string('email')->unique()->nullable();
             $table->string('wa_number');
-            $table->dateTime('open_time');
-            $table->datetime('close_time');
+            $table->time('open_time');
+            $table->time('close_time');
+            $table->string('logo')->nullable();
+            $table->string('map_link')->nullable();
             $table->timestamps();
         });
     }
