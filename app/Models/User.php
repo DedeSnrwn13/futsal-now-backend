@@ -61,7 +61,7 @@ class User extends Authenticatable implements JWTSubject, FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return str_ends_with($this->email, '@futsal.com') && $this->hasVerifiedEmail();
     }
 
     public function bookings()
