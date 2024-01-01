@@ -60,11 +60,11 @@ class GroundReviewResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('ground.sportArena.name')
-                    ->label('Sport Arena Name')
+                    ->label('Sport Arena')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('ground.name')
-                    ->label('Ground Name')
+                    ->label('Ground')
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('user.name')

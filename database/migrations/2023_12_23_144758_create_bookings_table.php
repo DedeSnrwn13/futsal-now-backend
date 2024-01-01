@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('gound_id');
+            $table->foreignId('ground_id');
             $table->foreignId('user_id');
             $table->dateTime('order_date');
             $table->dateTime('started_at');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('order_status');
             $table->string('payment_method');
             $table->string('payment_status');
-            $table->dateTime('paid_at');
+            $table->dateTime('paid_at')->nullable();
             $table->foreignId('promo_id')->nullable();
             $table->timestamps();
         });
