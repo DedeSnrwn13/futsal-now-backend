@@ -31,7 +31,6 @@ class SportArenaResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
-
     protected static ?string $navigationLabel = 'Sport Arenas';
 
     protected static ?string $navigationGroup = 'Master Sport Arena';
