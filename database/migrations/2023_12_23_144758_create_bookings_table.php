@@ -19,11 +19,13 @@ return new class extends Migration
             $table->dateTime('started_at');
             $table->dateTime('ended_at');
             $table->double('total_price');
+            $table->string('order_number')->unique();
             $table->string('order_status');
             $table->string('payment_method');
             $table->string('payment_status');
             $table->dateTime('paid_at')->nullable();
             $table->foreignId('promo_id')->nullable();
+            $table->string('ref_id')->nullable();
             $table->timestamps();
         });
     }

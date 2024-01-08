@@ -4,6 +4,8 @@ namespace App\Filament\Resources;
 
 use DateTime;
 use Filament\Forms;
+use Filament\Resources\Pages\CreateRecord;
+use Filament\Support\View\Components\Modal;
 use Filament\Tables;
 use App\Models\Booking;
 use Filament\Forms\Form;
@@ -20,6 +22,7 @@ use Filament\Forms\Components\DateTimePicker;
 use App\Filament\Resources\BookingResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\BookingResource\RelationManagers;
+use Filament\Resources\Pages\ViewRecord;
 
 class BookingResource extends Resource
 {
@@ -40,7 +43,7 @@ class BookingResource extends Resource
                 Section::make()
                 ->schema([
                     TextInput::make('ground_id')
-                        ->formatStateUsing(function ($record) {
+                        ->afterStateHydrated(function ($record) {
                             return $record['ground']['name'];
                         })
                         ->label('Ground Name')
@@ -56,8 +59,15 @@ class BookingResource extends Resource
                     DateTimePicker::make('ended_at')
                         ->required(),
                     TextInput::make('total_price')
-                        ->formatStateUsing(fn(string $state): string => number_format($state))
                         ->numeric()
+                        ->required(),
+                    TextInput::make('order_number')
+                        ->unique(
+                            Booking::class,
+                            'order_number',
+                            fn ($record) => $record,
+                        )
+                        ->disabled()
                         ->required(),
                     Select::make('order_status')
                         ->options([
@@ -79,7 +89,10 @@ class BookingResource extends Resource
                         ->required(),
                     TextInput::make('promo_id')
                         ->nullable()
-                        ->default('-')
+                        ->default('-'),
+                    TextInput::make('ref_id')
+                            ->default('-')
+                            ->nullable()
                 ])
                 ->columns(2)
             ]);
@@ -161,6 +174,20 @@ class BookingResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\Action::make()
+                    ->requiresConfirmation()
+                    ->button()
+                    ->icon('heroicon-o-check-circle')
+                    ->name('approve')
+                    ->label('Approve')
+                    ->color('success')
+                    ->action(function (Booking $record): void {
+                        $record->update([
+                            'payment_status' => 'success',
+                            'order_status' => 'finished'
+                        ]);
+                    })
+                    ->hidden(fn ($record) => ($record->payment_status == 'success' && $record->order_status == 'finished'))
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

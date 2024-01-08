@@ -20,7 +20,9 @@ class Booking extends Model
         'payment_method',
         'payment_status',
         'paid_at',
-        'promo_id'
+        'promo_id',
+        'order_number',
+        'ref_id'
     ];
 
     public function ground()
@@ -36,5 +38,16 @@ class Booking extends Model
     public function promo()
     {
         return $this->belongsTo(Promo::class);
+    }
+
+    public static function getOrderNumber($num = 1)
+    {
+        $code = "BK" . str_pad(self::count() + $num, 7, 0, STR_PAD_LEFT);
+
+        if (Booking::where('order_number', $code)->count() > 0) {
+            return self::getOrderNumber($num + 1);
+        }
+
+        return $code;
     }
 }
