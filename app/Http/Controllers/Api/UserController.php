@@ -21,8 +21,6 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
         ]);
 
-        if ($validator->fails()) return response()->json($validator->errors(), 422);
-
         if (!$token = auth()->attempt($validator->validated())) return response()->json(['error' => 'Unauthorized'], 401);
 
         return $this->createNewToken($token);
@@ -37,8 +35,6 @@ class UserController extends Controller
             'phone' => 'required',
             'address' => 'nullable|string'
         ]);
-
-        if ($validator->fails()) return response()->json($validator->errors()->toJson(), 400);
 
         $user = User::create(array_merge(
             $validator->validated(),
@@ -76,5 +72,10 @@ class UserController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
+    }
+
+    public function feedback(Request $request)
+    {
+        $request->validate();
     }
 }

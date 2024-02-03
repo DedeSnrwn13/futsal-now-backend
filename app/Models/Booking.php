@@ -25,6 +25,24 @@ class Booking extends Model
         'ref_id'
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($booking) {
+            $booking->order_number = self::getOrderNumber();
+        });
+    }
+
+    public static function getOrderNumber($num = 1)
+    {
+        $code = "BK" . str_pad(self::count() + $num, 7, 0, STR_PAD_LEFT);
+
+        if (Booking::where('order_number', $code)->count() > 0) {
+            return self::getOrderNumber($num + 1);
+        }
+
+        return $code;
+    }
+
     public function ground()
     {
         return $this->belongsTo(Ground::class);
@@ -38,16 +56,5 @@ class Booking extends Model
     public function promo()
     {
         return $this->belongsTo(Promo::class);
-    }
-
-    public static function getOrderNumber($num = 1)
-    {
-        $code = "BK" . str_pad(self::count() + $num, 7, 0, STR_PAD_LEFT);
-
-        if (Booking::where('order_number', $code)->count() > 0) {
-            return self::getOrderNumber($num + 1);
-        }
-
-        return $code;
     }
 }
