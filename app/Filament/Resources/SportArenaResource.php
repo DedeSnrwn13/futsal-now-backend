@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\SportArenaResource\Pages;
 use App\Filament\Resources\SportArenaResource\RelationManagers;
 use App\Filament\Resources\SportArenaResource\RelationManagers\GroundsRelationManager;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class SportArenaResource extends Resource
@@ -44,9 +45,9 @@ class SportArenaResource extends Resource
                 Section::make()
                 ->schema([
                     Select::make('user_id')
-                        ->options(User::find(auth()->id())->pluck('name', 'id'))
+                        ->label('Owner')
+                        ->options([auth()->id() => auth()->user()->name])
                         ->default(auth()->id())
-                        ->disabled()
                         ->required(),
                     TextInput::make('name')
                         ->placeholder('Input sport arena name')
