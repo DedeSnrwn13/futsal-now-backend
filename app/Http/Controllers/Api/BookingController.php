@@ -116,6 +116,11 @@ class BookingController extends Controller
             ], 402);
         }
 
+        $booking->update([
+            'order_status' => 'canceled',
+            'payment_status' => 'failed'
+        ]);
+
         return response()->json([
             'data' => $booking
         ]);
