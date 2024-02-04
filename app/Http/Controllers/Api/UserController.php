@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Feedback;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -75,15 +76,14 @@ class UserController extends Controller
 
     public function feedback(Request $request)
     {
+        $request['user_id'] = (int) $request->user_id;
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
             'body' => 'nullable|string|max:255',
             'rate' => 'required',
         ]);
 
-        User::create(array_merge(
-            $validator->validated(),
-            ['user_id' => auth()->id()]
-        ));
+        Feedback::create($validator->validated());
 
         return response()->json([
             'message' => 'Feedback successfully submited',

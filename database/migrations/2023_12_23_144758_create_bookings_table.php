@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('ground_id');
             $table->foreignId('user_id');
             $table->dateTime('order_date');
-            $table->dateTime('started_at');
-            $table->dateTime('ended_at');
+            $table->time('started_at');
+            $table->time('ended_at');
             $table->double('total_price');
             $table->string('order_number')->unique();
             $table->string('order_status');

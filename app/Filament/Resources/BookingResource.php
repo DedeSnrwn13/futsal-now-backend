@@ -115,11 +115,11 @@ class BookingResource extends Resource
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('started_at')
-                    ->dateTime()
+                    ->time()
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('ended_at')
-                    ->dateTime()
+                    ->time()
                     ->sortable()
                     ->searchable(),
                 TextColumn::make('started_at')

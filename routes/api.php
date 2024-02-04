@@ -47,6 +47,9 @@ Route::group([
             Route::get('/{id}', [GroundController::class, 'show'])->name('show');
             Route::get('/search/{query}', [GroundController::class, 'search'])->name('search');
 
+            // Booking Ground
+            Route::post('/{ground}/book', [BookingController::class, 'booking'])->name('store');
+
             // Review
             Route::prefix('{ground}/reviews')->name('reviews.')->group(function () {
                 Route::get('/', [GroundReviewController::class, 'byGround'])->name('ground');
@@ -62,10 +65,9 @@ Route::group([
 
     // Booking
     Route::prefix('bookings')->name('bookings.')->group(function () {
-        Route::post('/', [BookingController::class, 'booking'])->name('store');
         Route::get('/history', [BookingController::class, 'history'])->name('history');
         Route::get('/{id}/show', [BookingController::class, 'show'])->name('show');
-        Route::put('/{id}/cancel', [BookingController::class, 'cancel'])->name('cancel');
+        Route::put('/{order_number}/cancel', [BookingController::class, 'cancel'])->name('cancel');
     });
 
     // Feedback
