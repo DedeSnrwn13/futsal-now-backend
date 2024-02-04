@@ -69,13 +69,24 @@ class UserController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60,
             'user' => auth()->user()
         ]);
     }
 
     public function feedback(Request $request)
     {
-        $request->validate();
+        $validator = Validator::make($request->all(), [
+            'body' => 'nullable|string|max:255',
+            'rate' => 'required',
+        ]);
+
+        User::create(array_merge(
+            $validator->validated(),
+            ['user_id' => auth()->id()]
+        ));
+
+        return response()->json([
+            'message' => 'Feedback successfully submited',
+        ], 201);
     }
 }
