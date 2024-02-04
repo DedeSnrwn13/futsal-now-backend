@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\WebhookController;
 use App\Http\Controllers\Api\SportArenaController;
 use App\Http\Controllers\Api\GroundReviewController;
 use App\Http\Controllers\Api\PaymentProviderController;
+use App\Http\Controllers\Api\PromoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,48 +31,51 @@ Route::group([
     Route::post('/register', [UserController::class, 'register']);
     Route::post('/refresh', [UserController::class, 'refresh']);
 
-    Route::middleware('auth:api')->group(function () {
-        // User
-        Route::get('/user-profile', [UserController::class, 'userProfile']);
-        Route::post('/logout', [UserController::class, 'logout']);
+    // User
+    Route::get('/user-profile', [UserController::class, 'userProfile']);
+    Route::post('/logout', [UserController::class, 'logout']);
 
-        // Sport Arena
-        Route::prefix('sport-arenas')->name('sport_arenas.')->group(function () {
-            Route::get('/random', [SportArenaController::class, 'random'])->name('random');
-            Route::get('/search/{query}', [SportArenaController::class, 'search'])->name('search');
-            Route::get('/{sport_arena}/reviews', [GroundReviewController::class, 'bySportArena'])->name('reviews');
+    // Sport Arena
+    Route::prefix('sport-arenas')->name('sport_arenas.')->group(function () {
+        Route::get('/recommendation/limit', [SportArenaController::class, 'recommendation'])->name('recommendation');
+        Route::get('/search/{query}', [SportArenaController::class, 'search'])->name('search');
+        Route::get('/{sport_arena}/reviews', [GroundReviewController::class, 'bySportArena'])->name('reviews');
 
-            // Ground
-            Route::prefix('{sport_arena}/grounds')->name('grounds.')->group(function () {
-                Route::get('/', [GroundController::class, 'index'])->name('index');
-                Route::get('/search/{query}', [GroundController::class, 'search'])->name('search');
+        // Ground
+        Route::prefix('{sport_arena}/grounds')->name('grounds.')->group(function () {
+            Route::get('/', [GroundController::class, 'index'])->name('index');
+            Route::get('/{id}', [GroundController::class, 'show'])->name('show');
+            Route::get('/search/{query}', [GroundController::class, 'search'])->name('search');
 
-                // Review
-                Route::prefix('{ground}/reviews')->name('reviews.')->group(function () {
-                    Route::get('/', [GroundReviewController::class, 'byGround'])->name('ground');
-                });
+            // Review
+            Route::prefix('{ground}/reviews')->name('reviews.')->group(function () {
+                Route::get('/', [GroundReviewController::class, 'byGround'])->name('ground');
             });
         });
-
-        // Review
-        Route::get('reviews/random', [GroundReviewController::class, 'random'])->name('reviews');
-
-        // Payment Provider
-        Route::get('payment-provider', [PaymentProviderController::class, 'index'])->name('payment-provider');
-
-        // Booking
-        Route::prefix('bookings')->name('bookings.')->group(function () {
-            Route::post('/', [BookingController::class, 'booking'])->name('store');
-            Route::get('/history', [BookingController::class, 'history'])->name('history');
-            Route::get('/{id}/show', [BookingController::class, 'show'])->name('show');
-            Route::put('/{id}/cancel', [BookingController::class, 'cancel'])->name('cancel');
-        });
-
-        // Feedback
-        Route::post('/feedback', [UserController::class, 'feedback'])->name('feedback');
     });
 
+    // Review
+    Route::get('reviews/random', [GroundReviewController::class, 'random'])->name('reviews');
 
+    // Payment Provider
+    Route::get('payment-provider', [PaymentProviderController::class, 'index'])->name('payment-provider');
+
+    // Booking
+    Route::prefix('bookings')->name('bookings.')->group(function () {
+        Route::post('/', [BookingController::class, 'booking'])->name('store');
+        Route::get('/history', [BookingController::class, 'history'])->name('history');
+        Route::get('/{id}/show', [BookingController::class, 'show'])->name('show');
+        Route::put('/{id}/cancel', [BookingController::class, 'cancel'])->name('cancel');
+    });
+
+    // Feedback
+    Route::post('/feedback', [UserController::class, 'feedback'])->name('feedback');
+
+    // Promo
+    Route::prefix('promos')->name('promos.')->group(function () {
+        Route::get('/limit', [PromoController::class, 'limit'])->name('limit');
+        Route::get('/all', [PromoController::class, 'all'])->name('all');
+    });
 });
 
 Route::post('/webhook/midtrans', [WebhookController::class, 'midtransCallback'])->name('webhook.midtrans');
