@@ -77,4 +77,13 @@ class SportArenaController extends Controller
 
         return response()->json(['data' => $result], 200);
     }
+
+    public function reviews(SportArena $sportArena)
+    {
+        $reviews = $sportArena->groundReviews()
+            ->with(['user', 'ground'])
+            ->orderBy('rate', 'desc')->take(50)->get();
+
+        return response()->json(['data' => $reviews]);
+    }
 }

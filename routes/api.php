@@ -41,6 +41,9 @@ Route::group([
         Route::get('/search/{query}', [SportArenaController::class, 'search'])->name('search');
         Route::get('/{sport_arena}/reviews', [GroundReviewController::class, 'bySportArena'])->name('reviews');
 
+        // Review by sport arena
+        Route::get('/{sport_arena}/reviews', [SportArenaController::class, 'reviews'])->name('reviews');
+
         // Ground
         Route::prefix('{sport_arena}/grounds')->name('grounds.')->group(function () {
             Route::get('/', [GroundController::class, 'index'])->name('index');
@@ -52,7 +55,7 @@ Route::group([
 
             // Review
             Route::prefix('{ground}/reviews')->name('reviews.')->group(function () {
-                Route::get('/', [GroundReviewController::class, 'byGround'])->name('ground');
+                Route::post('/', [GroundReviewController::class, 'reviewByGround'])->name('ground');
             });
         });
     });

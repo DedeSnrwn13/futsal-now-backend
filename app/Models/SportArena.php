@@ -33,4 +33,16 @@ class SportArena extends Model
     {
         return $this->hasMany(Ground::class);
     }
+
+    public function groundReviews()
+    {
+        return $this->hasManyThrough(
+            GroundReview::class,
+            Ground::class,
+            'sport_arena_id',
+            'ground_id',
+            'id',
+            'id'
+        );
+    }
 }

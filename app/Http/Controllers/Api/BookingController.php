@@ -65,6 +65,7 @@ class BookingController extends Controller
             'phone' => $booking->user->phone,
         ];
 
+
         // Create Midtrans transaction
         $transaction = [
             'transaction_details' => [

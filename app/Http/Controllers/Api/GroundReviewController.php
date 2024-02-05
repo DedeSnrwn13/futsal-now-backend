@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Ground;
-use App\Models\GroundReview;
 use App\Models\SportArena;
+use App\Models\GroundReview;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class GroundReviewController extends Controller
 {
@@ -30,12 +31,17 @@ class GroundReviewController extends Controller
         return response()->json(['data' => $reviews]);
     }
 
-    public function byGround(SportArena $sportArena, Ground $ground)
+    public function reviewByGround(SportArena $sportArena, Ground $ground, Request $request)
     {
-        $reviews = GroundReview::with('ground', 'user')
-            ->where('ground_id', $ground->id)
-            ->orderBy('rate', 'desc')->take(50)->get();
+        $validator = Validator::make($request->all(), [
+            'ground_id' => 'required|exists:grounds,id',
+            'user_id' => 'required|exists:users,id',
+            'rate' => 'required',
+            'comment' => 'nullable|string'
+        ]);
 
-        return response()->json(['data' => $reviews]);
+        $review = GroundReview::create($validator->validated());
+
+        return response()->json(['data' => $review]);
     }
 }
